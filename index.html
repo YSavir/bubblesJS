@@ -9,11 +9,13 @@
       $(function(){
         $('body').on('click', function(e){
           var clicked = e;
+          var xCoordinate = clicked.pageX - 50;
+          var yCoordinate = clicked.pageY - 40;
           var clickedTarget = $(e.target)
           if (!clickedTarget.is('div.bubble')) {
             bubbles.bubble({
-              "offsetX": clicked.pageX,
-              "offsetY": clicked.pageY
+              "offsetX": xCoordinate,
+              "offsetY": yCoordinate
             })
           }
         })
