@@ -9,16 +9,15 @@
     <script>
       $(function(){
         $('body').on('click', function(e){
-          var clicked = e;
-          var clickedTarget = $(e.target)
+          var xCoordinate = e.pageX - 50;
+          var yCoordinate = e.pageY - 40;
           // if not clicking on a bubble
-          if (!$(e.target).is('div.bubble')) {
-            // bubbles.bubble({
+          if (!e.target.is('div.bubble')) {
             Bubble.make({
               // set offsets to current location, subtracting 50
               // to compensate for div size, using div center
-              "offsetX": clicked.pageX - 50,
-              "offsetY": clicked.pageY - 50
+              "offsetX": xCoordinate,
+              "offsetY": yCoordinate
             })
           }
         })
