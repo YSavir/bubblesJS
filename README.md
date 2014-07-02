@@ -19,7 +19,7 @@ Bubbles can be customized by passing the following parameters:
 Bubble.make({
   // color
   color: 'pink',
-  // the diamter of the bubble in pixels
+  // the diameter of the bubble in pixels
   size: 100, 
   // the class of the bubble div.
   klass: 'bubble', 
