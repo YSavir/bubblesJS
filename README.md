@@ -12,10 +12,10 @@ Make a new bubble with `Bubble.make()`.
 
 ### Customization
 
-Bubbles can be customized by passing the following parameters:
+Bubbles can be customized by passing the following options:
 
 ```javascript
-// parameters shown are the defaults
+// arguments shown are the defaults
 Bubble.make({
   // color of the bubble. Accepts any valid CSS color.
   color: 'pink',
