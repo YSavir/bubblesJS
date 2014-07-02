@@ -8,7 +8,7 @@ None! BubblesJS is written in pure javascript--no need for jQuery or any other l
 
 ## Usage
 
-To make a new bubble, use `Bubble.make({})`.
+Make a new bubble with `Bubble.make()`.
 
 ### Customization
 
@@ -17,25 +17,26 @@ Bubbles can be customized by passing the following parameters:
 ```javascript
 // parameters shown are the defaults
 Bubble.make({
+  // color
   color: 'pink',
-
-  size: 100, // the diamter of the bubble in pixels
-
-  klass: 'bubble', // the class of the bubble div.
-
-  parent: document.getElementsByTagName('body')[0], // the parent element for the bubble div
-
-  offsetX: 0, // how many pixels to the right should the bubble be rendered
-
-  offsetY: 0, // how many pixels from the top should the bubble be rendered
-
-  drift: true, // setting to false will make the bubble stationary
-
-  verticalSpeed: 20, // how many pixels up should the bubble drift at a time
-
-  horizontalSpeed: 20, // how many pixels to the right or left the bubble should drift at a time
-
-  driftRate: 900 // how long it takes the bubble to complete a single drift animation
+  // the diamter of the bubble in pixels
+  size: 100, 
+  // the class of the bubble div.
+  klass: 'bubble', 
+  // the parent element for the bubble div
+  parent: document.getElementsByTagName('body')[0], 
+  // how many pixels to the right should the bubble be rendered
+  offsetX: 0, 
+  // how many pixels from the top should the bubble be rendered
+  offsetY: 0, 
+  // setting to false will make the bubble stationary
+  drift: true, 
+  // how many pixels up should the bubble drift at a time
+  verticalSpeed: 20, 
+  // how many pixels to the right or left the bubble should drift at a time
+  horizontalSpeed: 20, 
+  // how long it takes the bubble to complete a single drift animation
+  driftRate: 900 
 })
 ```
 
