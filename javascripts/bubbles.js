@@ -1,5 +1,5 @@
 var Bubble = {
-  version: 0.2,
+  version: 1.0,
   make: function(options){
     // bubble defaults
     var bubble = {
