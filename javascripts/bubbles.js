@@ -1,132 +1,152 @@
-var bubbles = {
-  models: {
-    bubble: {
-      size: "100px",
+var Bubble = {
+  version: 0.2,
+  make: function(options){
+    // bubble defaults
+    var bubble = {
+      size: 100,
       color: "pink",
-      text: null,
-      drift: "up",
-      parent: 'body',
-      offsetX: "0px",
-      offsetY: "0px",
       klass: 'bubble',
-      initialize: function(){
-        var model = this;
-        model.render()
-        $(model.bubble).on("click", function(){
-          model.pop();
-        })
-        if (this.drift) {
-          if (this.drift != "float") this.driftBubble();
+      parent: document.getElementsByTagName('body')[0],
+      offsetX: 0,
+      offsetY: 0,
+      drift: true,
+      verticalSpeed: 20, // negative will cause downward drifting
+      horizontalSpeed: 20,
+      driftRate: 900
+    };
+    // add some functionality:
+    Object.defineProperties(bubble, {
+      // initialization
+      initialize: {
+        value: function(){
+          this.render();
+          // set listener for pop
+          this.bubble.addEventListener("click", function(){
+            this.pop();
+          }.bind(this));
+          // Unless drift is false, call the drfit function corresponding
+          // to it's drift.
+          if (this.drift) {
+            this.driftBubble();
+          }
         }
       },
-      render: function(){
-        // $('body').append(this.template());
-        this.bubble = $(this.template()).appendTo(this.parent);
+      render: {
+        value: function(){
+          // append the template to the DOM and save the element as
+          // this.bubble
+          this.parent.insertAdjacentHTML('beforeend', this.template());
+          this.bubble = this.parent.lastChild
+        }
       },
-      template: function(){
-        var bubbleTemplate = []
-        // push anchor tag if the bubble has a url
-        // add url validation at some point
-        if (this.url) bubbleTemplate.push('<a href="', this.url, '" target="_blank">');
-        // push all standard info
-        bubbleTemplate.push('<div style="color:white;background-color:white;',
-                              // gradient breakdowns
-                              // should add browser detection, etc
-                              // Firefox
-                              'background:-moz-radial-gradient(35% 35%, circle cover, #ffffff 0%, ', this.color, ' 25%, ', this.color, ' 60%, #ffffff 80%);',
-                              // Chrome, Safari
-                              'background:-webkit-radial-gradient(35% 35%, circle cover, #ffffff 0%, ', this.color, ' 25%, ', this.color, ' 60%, #ffffff 80%);',
-                              // Opera
-                              'background:-o-radial-gradient(35% 35%, circle cover, #ffffff 0%, ', this.color, ' 25%, ', this.color, ' 60%, #ffffff 80%);',
-                              // IE
-                              'background:-ms-radial-gradient(35% 35%, circle cover, #ffffff 0%, ', this.color, ' 25%, ', this.color, ' 60%, #ffffff 80%);',
-                              // Size
-                              'width:', this.size,
-                              ';height:',this.size,
-                              // Positioning
-                              ';position:absolute;',
-                              'top:', this.offsetY,
-                              ';left:', this.offsetX,
-                              // border
-                              ';border:1px solid #eeeeee;border-radius:1000px;text-align:center;"',
-                              // class
-                              'class="', this.klass, '">');
-        // only add text if it has text
-        if (this.text) bubbleTemplate.push('<p>', this.text, '</p>');
-        // push div close
-        bubbleTemplate.push('</div>');
-        // push anchor tag close if bubble has a url
-        if (this.url) bubbleTemplate.push('</a>');
-        return bubbleTemplate.join("");
+      template: {
+        value: function(){
+          var bubbleTemplate = [];
+
+          // if (this.url) bubbleTemplate.push('<a href="', this.url, '" target="_blank">');
+          // push all standard info
+          bubbleTemplate.push('<div style="color:white;background-color:white;',
+                                // gradient breakdowns
+                                // Firefox
+                                'background:-moz-radial-gradient(35% 35%, circle cover, #ffffff 0%, ', this.color, ' 25%, ', this.color, ' 60%, #ffffff 80%);',
+                                // Chrome, Safari
+                                'background:-webkit-radial-gradient(35% 35%, circle cover, #ffffff 0%, ', this.color, ' 25%, ', this.color, ' 60%, #ffffff 80%);',
+                                // Opera
+                                'background:-o-radial-gradient(35% 35%, circle cover, #ffffff 0%, ', this.color, ' 25%, ', this.color, ' 60%, #ffffff 80%);',
+                                // IE
+                                'background:-ms-radial-gradient(35% 35%, circle cover, #ffffff 0%, ', this.color, ' 25%, ', this.color, ' 60%, #ffffff 80%);',
+                                // Size
+                                'width:', this.size + "px",
+                                ';height:', this.size + "px",
+                                // Positioning
+                                ';position:absolute;',
+                                'top:', this.offsetY + "px",
+                                ';left:', this.offsetX + "px",
+                                // border
+                                ';border:1px solid #eeeeee;border-radius:1000px;text-align:center;"',
+                                // class
+                                'class="', this.klass, '">');
+          // only add text if it has text
+          if (this.text) bubbleTemplate.push('<p>', this.text, '</p>');
+          // push div close
+          bubbleTemplate.push('</div>');
+          // push anchor tag close if bubble has a url
+          // if (this.url) bubbleTemplate.push('</a>');
+          return bubbleTemplate.join("");
+        }
       },
-      pop: function(){
-        var bubble = $(this.bubble)
-        bubble.css({
+      pop: {
+        value: function(){
+          var bubble = this.bubble
           // make the bubble invisible
-          "background": "none",
-          "border": "none"
-        })
-        // add that crappy ascii for popping image
-        bubble.append('<div class="popContainer" style="color:black"><div class="baloonPOP">\\</div><div class="baloonPOP">|</div><div class="baloonPOP">/</div><div class="baloonPOP">-</div><div class="baloonPOP">o</div><div class="baloonPOP">-</div><div class="baloonPOP">/</div><div class="baloonPOP">|</div><div class="baloonPOP">\\</div></div>')
-        $('.popContainer').css({
-          "width": "90px",
-          "height": "90px",
-          "position": "relative"
-        });
-        // assign sizes to the divs from above
-        $('.baloonPOP').css({
-          "width": "30px",
-          "height": "30px",
-          "text-align": "center",
-          "position": "relative",
-          "display": "inline-block"
-        })
-        // remove the bubble entirely
-        setTimeout(function(){ bubble.detach() }, 100)
+          bubble.style.background = "none";
+          bubble.style.border = "none";
+          // add that crappy ascii for popping image
+          bubble.innerHTML = '<div class="popContainer" style="color:black"><div class="baloonPOP">\\</div><div class="baloonPOP">|</div><div class="baloonPOP">/</div><div class="baloonPOP">-</div><div class="baloonPOP">o</div><div class="baloonPOP">-</div><div class="baloonPOP">/</div><div class="baloonPOP">|</div><div class="baloonPOP">\\</div></div>' 
+          popContainer = bubble.firstChild;
+          // set up container of pop ascii
+          popContainer.style.width = "90px";
+          popContainer.style.height = "90px";
+          popContainer.style.position = "relative";
+          poppedBubbles = bubble.getElementsByClassName('baloonPOP');
+          // set up css for each div inside the pop container
+          // iterating over object using for(some in something) breaks
+          // due to presence of item and namedItem. Is there a way to avoid
+          // them, or a better way to iterate other than a for loop?
+          for (var i = 0; i < 9; i++){
+            poppedBubbles[i].style.width = "30px";
+            poppedBubbles[i].style.height = "30px";
+            poppedBubbles[i].style.textAlign = "center";
+            poppedBubbles[i].style.position = "relative";
+            poppedBubbles[i].style.display = "inline-block";
+          }
+          // remove the bubble entirely
+          setTimeout(function(){ bubble.parentElement.removeChild(bubble); }.bind(this), 100)
+        }
       },
-      driftBubble: function(){
-        var self = this;
-        // the "floating" drift has a different animation
-        // ....which I'll definitely make some day
-        // ....because this is such a critical project
-        // ....not at all a silly waste of my time
-        if (self.drift != "float") {
-          // If it's going up, remove pixels from it's top css
-          var directionY = this.drift == "up" ? "-=20" : "+=20"
-          // randomly determine whether bubble goes left or right
-          var directionX = Math.round(Math.random() * 100) % 2 == 0 ? "-=20" : "+=20"
-          self.bubble.animate({
-            top: directionY,
-            left: directionX
-          },
-          900,
-          "linear",
-          // do it again!
-          function(){
-            self.driftBubble();
+      driftBubble: {
+        value: function(){
+          var bubble = this.bubble
+          // Moves bubbles every 10 milliseconds.
+          // Total starting ticks is therefor driftrate devided by 10.
+          var remainingTicks = Math.floor((this.driftRate/10))
+          var movementYPerTick = Math.ceil(this.verticalSpeed / remainingTicks)
+          // Assign bubble to move left or right randomly (movement to left is negative)
+          var movementXPerTick = Math.round(Math.random() * 100) % 2 === 0 ? Math.ceil(this.horizontalSpeed / remainingTicks) : Math.ceil(this.horizontalSpeed / remainingTicks) * -1
+          var tick = function(){
+            bubble.style.top = (parseInt(bubble.style.top) - movementYPerTick);
+            bubble.style.left = (parseInt(bubble.style.left) + movementXPerTick);
+            remainingTicks-= 1
+          }.bind(this)
+          // create a promise to track the interval for a single run of ticks
+          var tickRun = new Promise(function(resolve, reject){
+            var tickInterval = setInterval(function(){
+              if (remainingTicks > 0){
+                tick();
+              } else {
+                clearInterval(tickInterval);
+                resolve();
+              }
+            }, 10);
           });
+          // if the bubble is offscreen, remove it from the DOM
+          // NOTE: currently only works for top
+          tickRun.then(function(){
+            if (parseInt(bubble.style.top) < -100) {
+              bubble.parentElement.removeChild(bubble);
+            } else {
+              this.driftBubble();
+            }
+          }.bind(this))
         }
       }
+    });
+    // create a new bubble, set its stats, initialize, and return it
+    var newBubble = Object.create(bubble);
+    for (option in options){
+      newBubble[option] = options[option]
     }
-  },
-  bubble: function(options){
-    // If the user didn't provide an options hash, set it to empty
-    if (!options) options = {}
-    // Check each possible parameter, and if the user specified a value for it, add configuration/writable
-    if (options["size"]) options["size"] = {configurable: true, value: options["size"]}
-    if (options["color"]) options["color"] = {configurable: true, value: options["color"]} 
-    if (options["drift"]) options["drift"] = {configurable: true, value: options["drift"]}
-    if (options["klass"]) options["klass"] = {configurable: true, value: options["klass"]}
-    if (options["parent"]) options["parent"] = {configurable: true, value: options["parent"]}
-    if (options["offsetX"]) options["offsetX"] = {configurable: true, value: options["offsetX"]}
-    if (options["offsetY"]) options["offsetY"] = {configurable: true, value: options["offsetY"]}
-    if (options["text"]) options["text"] = {writable: true, value: options["text"]}
-    if (options["url"]) options["url"] = {writable: true, value: options["url"]}
-    // blow the bubble
-    var newBubble = Object.create(bubbles.models.bubble, options)
-    // initialize the blown bubble
     newBubble.initialize();
-    // it's nice to return things
-    return newBubble
+    return newBubble;
   }
 }

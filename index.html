@@ -1,18 +1,19 @@
 <html>
   <head>
-    <script src='javascripts/jquery-1.11.0.js'></script>
+    <!-- // <script src='javascripts/jquery-1.11.0.js'></script> -->
     <!-- // <script src='javascripts/bubbles.js'></script> -->
-    <script src='javascripts/bubbles_rewrite.js'></script>
+    <script src='javascripts/bubbles.js'></script>
   </head>
   <body>
 
     <script>
-      $(function(){
-        $('body').on('click', function(e){
+      window.onload = function(){
+        document.getElementsByTagName('body')[0].addEventListener("click", function(e){
+          boo = e
           var xCoordinate = e.pageX - 50;
           var yCoordinate = e.pageY - 40;
           // if not clicking on a bubble
-          if (!e.target.is('div.bubble')) {
+          if (e.target.className != "bubble") {
             Bubble.make({
               // set offsets to current location, subtracting 50
               // to compensate for div size, using div center
@@ -21,7 +22,7 @@
             })
           }
         })
-      })
+      }
     </script>
     
   </body>
