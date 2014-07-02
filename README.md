@@ -54,6 +54,9 @@ Bubble.make({
 Anyone should feel free to submit a pull request. Here are a couple of features that can be added:
 
 * Allowing a bubble to drift consistently left or right instead of in a random direction.
-* Inverting the drift direction (setting the bubble to consistently drift left or right instead of up or down)
-* More bubble shapes!
-* Anything that strikes your imagination
+* Inverting the drift direction (setting the bubble to consistently drift left or right instead of up or down).
+* An animation showing the bubble inflate.
+* 'Random' as a functioning option for color.
+* A window.Promise check before creating the Promise in driftBubble, and a suitable replacement if the browser does not yet have Promise implemented.
+* Other bubble shapes!
+* Anything that strikes your imagination.
