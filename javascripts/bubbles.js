@@ -1,4 +1,4 @@
-function Bubble(){
+(function(){
   // append the template to the DOM and save the element as
   // this.bubble
   var _initialize = function(bubble){
@@ -138,5 +138,4 @@ function Bubble(){
       return newBubble;
     }
   }
-}
-Bubble()
+}())
